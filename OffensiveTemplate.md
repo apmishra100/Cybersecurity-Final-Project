@@ -9,7 +9,7 @@
 Nmap scan results for each machine reveal the below services and OS details:
 
 ```bash
-$ nmap -sS -sV 192.168.1.110
+$ nmap -sS -sV -A 192.168.1.110
 Nmap scan report for 192.168.1.110
 Host is up (0.00072s latency).
 Not shown: 995 closed ports
