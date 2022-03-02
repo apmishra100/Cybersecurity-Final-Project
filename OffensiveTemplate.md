@@ -517,7 +517,8 @@ Processing triggers for kali-menu (2020.1.7) ...
 
 Using gobuster:
 
-```bashroot@Kali:~# gobuster -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  dir -u 192.168.1.115
+```bash
+root@Kali:~# gobuster -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt  dir -u 192.168.1.115
 ===============================================================
 Gobuster v3.1.0
 by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
