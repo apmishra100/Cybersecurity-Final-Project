@@ -14,7 +14,7 @@ The following machines were identified on the network:
   - **Purpose**: Contains the Hypervisor for all of the other VMs.
   - **IP Address**: 192.168.1.1
 - Name of VM 2 : Kali
-  - **Operating System**: Linux
+  - **Operating System**: Kali Linux
   - **Purpose**: Attacker machine
   - **IP Address**: 192.168.1.90
 - Name of VM 3 : Capstone
@@ -63,7 +63,7 @@ HTTP Request Size Monitor is implemented as follows:
 
   - **Metric**: Packetbeat :  sum() of http.request.bytes OVER all documents IS ABOVE 3500 
   - **Threshold**: http.request size > 3500 bytes in the past minute
-  - **Vulnerability Mitigated**: Cross-Site Scripting Code injection in HTTP requests (XSS and CRLF) 
+  - **Vulnerability Mitigated**: Cross-Site Scripting Code injection in HTTP requests (XSS and CRLF) & Potential Port Scanning
   - **Reliability**: Medium Reliability - This alert is using the http.request size to determine whether a malicious request has been made to the server. While a 3500 byte size request may be large, there may be reasons that a user would need to upload a file of that size (e.g. if you needed to upload a profile picture). For this reason, this would be considered a medium reliability alert as there may be some necessary use cases of large file requests.
 
 ![Http Request Size](images/httpRequestSizeAlert.png "Http Request Size")
@@ -94,7 +94,7 @@ The logs and alerts generated during the assessment suggest that this network is
 - Vulnerability 2 : HTTP Request Size/XSS
   - **Patch**: Implement both client side and server side validations on files that are being uploaded. 
   - **Why It Works**: Only certain file formats should be allowed to be uploaded to the webserver. If the user tries to upload a non-standard file (such as a .js file, or a .php/html file) then the browser should automatically disallow the transaction from completing via client-side validation. 
-  
+
 - Vulnerability 3 : Malware/Rogue Program
   - **Patch**: Install a rootkit scanner such as chkrootkit with `sudo apt install chkrootkit`. Enable system scanning with lynis `sudo apt install lynis`.
   - **Why It Works**: `chkrootkit` will scan the system and make sure there have been no installed rootkits on the system. `lynis` will perform system health scan of systems to support system hardening and compliance testing. It can be used to determine any existing vulnerabilities that can be exploited.
