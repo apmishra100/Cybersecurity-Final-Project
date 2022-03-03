@@ -93,6 +93,12 @@ The following vulnerabilities were identified on each target:
     - Within the WordPress database there was a `wp_users` table. The user's passwords in this table are unsalted and very weak as they were able to be cracked via john with a simple wordlist. This is a violation CWE-916: Use of Password Hash With Insufficient Computational Effort.
   - Improper user sudo privileges 
     - Steven had sudo privileges to `/usr/bin/python`. Due to this we were able to spawn a root shell. This is a violation of CWE-250: Execution with Unnecessary Privileges.
+- Target 2
+  - Disclosure of software versions
+    - Target 2 had an older version of PHPMailer running on the system. There was a `VERSION` file that was publicly accessible on the site. Opening this file indicates that the PHPMailer version is `5.2.16`. This led to finding a critical vulnerability which inevitably allowed for remote code execution and a reverse shell to be created. Disclosing information like this is a violation of CWE-200: Exposure of Sensitive Information to an Unauthorized Actor.
+  - CVE-2016-10033 Remote Code Execution Exploit in PHPMailer < 5.2.18
+    - The mailSend function in the isMail transport in PHPMailer before 5.2.18 might allow remote attackers to pass extra parameters to the mail command and consequently execute arbitrary code via a \\" (backslash double quote) in a crafted Sender property.
+    - We were able to take advantage of this vulnerability and establish a remote shell. Had this been patched to use a more recent version of PHPMailer, we may not have been able to gain access.
 
 
 The following is an output of nikto scan on the machine on both the whole host and the wordpress site hosted on the machine.
