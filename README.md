@@ -8,3 +8,5 @@ The following files handled the three activities :
 - [Offensive Template](OffensiveTemplate.md)
 - [Defensive Template](DefensiveTemplate.md)
 - [Network Template](NetworkTemplate.md)
+- [Group Presentation](Offensive_Final_Project_Presentation_Template.pdf)
+
