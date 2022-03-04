@@ -81,7 +81,7 @@ This scan identifies the services below as potential points of entry:
   - The target is running an Apache server. We may be able to find an existing vulnerability related to Apache 2.4.10.
 
 
-The following vulnerabilities were identified on each target:
+The following weaknesses/vulnerabilities were identified on each target:
 - Target 1
   - Weak passwords
     - A user's password was found to be the same as their username. This gave initial ssh access to the machine. This is a violation of CWE-521: Weak Password Requirements.
@@ -93,6 +93,8 @@ The following vulnerabilities were identified on each target:
     - Within the WordPress database there was a `wp_users` table. The user's passwords in this table are unsalted and very weak as they were able to be cracked via john with a simple wordlist. This is a violation CWE-916: Use of Password Hash With Insufficient Computational Effort.
   - Improper user sudo privileges 
     - Steven had sudo privileges to `/usr/bin/python`. Due to this we were able to spawn a root shell. This is a violation of CWE-250: Execution with Unnecessary Privileges.
+  - Wordpress Enumeration
+    - Using WPScan we were able to enumerate user accounts on the wordpress installation. This vulnerability is discussed more in depth in CVE-2009-2335.   
 - Target 2
   - Disclosure of software versions
     - Target 2 had an older version of PHPMailer running on the system. There was a `VERSION` file that was publicly accessible on the site. Opening this file indicates that the PHPMailer version is `5.2.16`. This led to finding a critical vulnerability which inevitably allowed for remote code execution and a reverse shell to be created. Disclosing information like this is a violation of CWE-200: Exposure of Sensitive Information to an Unauthorized Actor.
